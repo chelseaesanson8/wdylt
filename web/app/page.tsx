@@ -60,7 +60,6 @@ export default function Home() {
           <div className="lamp" aria-hidden="true" />
           <p className="mono muted">One page a day</p>
           <TypedHero id="hero-title" />
-          <div className="rule" aria-hidden="true" />
           <p className="hero__lede">
             Write it down before you forget why it mattered. Each day we&rsquo;ll show you the people who
             were learning something close to it.

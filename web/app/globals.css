@@ -257,13 +257,8 @@ ul {
   }
 }
 
-.rule {
-  width: 44px;
-  height: 1px;
-  background: var(--amber);
-  margin: 30px 0 22px;
-}
 .hero__lede {
+  margin-top: 26px;
   max-width: var(--measure);
   font-family: var(--font-display), Georgia, serif;
   font-size: 20px;
