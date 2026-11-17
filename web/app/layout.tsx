@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, IBM_Plex_Mono, Spectral } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
 import "./globals.css";
 
-const bodoni = Bodoni_Moda({
+// Headings: Newsreader, a text serif with optical sizes, so it stays elegant
+// large and clear small. Reading text: Inter, built for screens. The logo
+// keeps Bodoni Moda inside its SVG.
+const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
   axes: ["opsz"],
@@ -10,10 +13,8 @@ const bodoni = Bodoni_Moda({
   display: "swap",
 });
 
-const spectral = Spectral({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
   variable: "--font-body",
   display: "swap",
 });
@@ -37,8 +38,11 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: [{ url: "/brand/wdylt-2-signature-icon-dark.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/brand/wdylt-2-signature-icon-dark-1024.png" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   twitter: {
     card: "summary",
@@ -54,7 +58,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bodoni.variable} ${spectral.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${newsreader.variable} ${inter.variable} ${plexMono.variable}`}>
       <body>{children}</body>
     </html>
   );

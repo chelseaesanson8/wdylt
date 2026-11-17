@@ -47,7 +47,7 @@ from the repo root.
 - `app/globals.css`: the Marginalia "ink" styles (colors at the top)
 - `components/wordmark.tsx` and `public/brand/`: the Signature logo. Replace an SVG in
   `public/brand/` under the same file name to update it everywhere; the favicon
-  is set in `app/layout.tsx`
+  files (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`) sit in `public/`
 - `components/waitlist-form.tsx` and `app/actions.ts`: the sign-up form and
   the server action that calls Convex
 - `../convex/waitlist.ts`: the mutation that validates and de-duplicates emails

@@ -1,4 +1,6 @@
-/* Marginalia "ink edition": near-black page, warm paper text, amber accent. */
+/* Marginalia "ink edition": near-black page, warm paper text, amber accent.
+   Type: Newsreader for headings, Inter for reading text, IBM Plex Mono for
+   small labels. Bodoni Moda lives only in the logo SVG. */
 :root {
   --bg-deep: #0d0e12;
   --bg: #14151a;
@@ -40,9 +42,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-body), Georgia, serif;
-  font-size: 17px;
-  line-height: 1.6;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -86,7 +88,7 @@ ul {
   text-align: center;
 }
 .small {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .skip-link {
@@ -166,11 +168,11 @@ ul {
 }
 .hero__title {
   margin-top: 22px;
-  font-family: var(--font-body), Georgia, serif;
-  font-weight: 300;
-  font-size: clamp(44px, 11vw, 76px);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(42px, 10.5vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
   color: var(--text-strong);
   text-wrap: balance;
 }
@@ -182,8 +184,9 @@ ul {
 }
 .hero__lede {
   max-width: var(--measure);
-  font-size: 19px;
-  line-height: 1.6;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 20px;
+  line-height: 1.5;
   font-style: italic;
   color: var(--muted);
   text-wrap: pretty;
@@ -237,8 +240,9 @@ ul {
   border-radius: 0;
   background: rgba(211, 162, 79, 0.06);
   color: var(--amber-soft);
-  font-family: var(--font-body), Georgia, serif;
-  font-size: 18px;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
   transition: background 150ms ease;
 }
@@ -262,7 +266,7 @@ ul {
 .waitlist__done {
   padding: 18px 0 18px 14px;
   border-left: 1px solid var(--amber-deep);
-  font-family: var(--font-display), Didot, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-style: italic;
   font-size: 19px;
   line-height: 1.5;
@@ -308,8 +312,8 @@ ul {
   margin-bottom: 8px;
 }
 .step__title {
-  font-family: var(--font-display), Didot, serif;
-  font-weight: 400;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
   font-size: 24px;
   line-height: 1.25;
   color: var(--text-strong);
@@ -348,7 +352,7 @@ ul {
   margin: 12px auto 30px;
   max-width: 22ch;
   text-align: center;
-  font-family: var(--font-display), Didot, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-weight: 400;
   font-size: clamp(28px, 7vw, 40px);
   line-height: 1.2;
@@ -370,11 +374,11 @@ ul {
 .entry__meta {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 12px;
 }
 .entry__text {
-  font-family: var(--font-display), Didot, serif;
-  font-size: 18px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 19px;
   line-height: 1.5;
   color: var(--text-soft);
   text-wrap: pretty;
@@ -383,9 +387,9 @@ ul {
   margin-top: auto;
   padding-left: 10px;
   border-left: 1px solid var(--amber-deep);
-  font-family: var(--font-display), Didot, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-style: italic;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--note);
 }
 @media (min-width: 860px) {
@@ -410,7 +414,7 @@ ul {
   margin: 0 auto;
 }
 .closing__title {
-  font-family: var(--font-display), Didot, serif;
+  font-family: var(--font-display), Georgia, serif;
   font-weight: 400;
   font-size: clamp(30px, 8vw, 44px);
   line-height: 1.2;

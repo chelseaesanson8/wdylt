@@ -1,9 +1,9 @@
-// The Signature wordmark: "wdylt." in Bodoni italic with an amber full stop.
-// The SVG lives in public/brand/. A refined logo can replace that file under
-// the same name, and every use here updates.
-const WORDMARK_SRC = "/brand/wdylt-2-signature-wordmark-dark.svg";
-// Intrinsic size from the SVG's viewBox (387 x 163.5).
-const RATIO = 387 / 163.5;
+// The Signature wordmark: "wdylt." in Bodoni Moda italic with an amber full
+// stop. The SVG lives in public/brand/; replace it under the same name to
+// update every use.
+const WORDMARK_SRC = "/brand/wdylt-wordmark-dark.svg";
+// Intrinsic size from the SVG's viewBox (394.5 x 163.5).
+const RATIO = 394.5 / 163.5;
 
 const heights = { md: 40, lg: 72 } as const;
 
