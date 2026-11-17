@@ -4,7 +4,7 @@ import "./globals.css";
 
 // Headings: Newsreader, a text serif with optical sizes, so it stays elegant
 // large and clear small. Reading text: Inter, built for screens. The logo
-// keeps Bodoni Moda inside its SVG.
+// is Newsreader italic too, outlined inside its SVG.
 const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],

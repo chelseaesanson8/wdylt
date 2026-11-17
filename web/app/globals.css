@@ -1,6 +1,6 @@
 /* Marginalia "ink edition": near-black page, warm paper text, amber accent.
    Type: Newsreader for headings, Inter for reading text, IBM Plex Mono for
-   small labels. Bodoni Moda lives only in the logo SVG. */
+   small labels. The logo is Newsreader italic, outlined in its SVG. */
 :root {
   --bg-deep: #0d0e12;
   --bg: #14151a;
