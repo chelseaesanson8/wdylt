@@ -1,4 +1,5 @@
 import { Wordmark } from "@/components/wordmark";
+import { TypedHero } from "@/components/typed-hero";
 import { WaitlistForm } from "@/components/waitlist-form";
 
 const steps = [
@@ -58,10 +59,7 @@ export default function Home() {
         <section className="hero" aria-labelledby="hero-title">
           <div className="lamp" aria-hidden="true" />
           <p className="mono muted">One page a day</p>
-          <h1 id="hero-title" className="hero__title">
-            What did you
-            <br /> learn today?
-          </h1>
+          <TypedHero id="hero-title" />
           <div className="rule" aria-hidden="true" />
           <p className="hero__lede">
             Write it down before you forget why it mattered. Each day we&rsquo;ll show you the people who

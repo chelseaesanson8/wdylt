@@ -176,6 +176,87 @@ ul {
   color: var(--text-strong);
   text-wrap: balance;
 }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Typed headline and "today I learned" loop ---------- */
+.typed__question {
+  white-space: pre-line;
+}
+.typed__ghost {
+  color: transparent;
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin: 0 -4px 0 2px; /* net zero width, so text never shifts */
+  vertical-align: -0.08em;
+  background: var(--amber);
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+.til {
+  margin-top: 22px;
+  min-height: calc(3 * 1.5em + 22px); /* room for a three-line sample */
+  max-width: var(--measure);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: opacity 600ms ease;
+}
+.til__label {
+  color: var(--dim);
+}
+.til__text {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--text-soft);
+  text-wrap: pretty;
+}
+.til .caret {
+  height: 1em;
+}
+.typed[data-phase="question"] .til {
+  opacity: 0;
+}
+/* Before the script starts, keep the text hidden briefly so it doesn't
+   flash and then retype. Without JavaScript it simply appears. */
+.typed[data-phase="idle"] {
+  animation: typed-reveal 0s 1.2s both;
+}
+@keyframes typed-reveal {
+  from {
+    visibility: hidden;
+  }
+  to {
+    visibility: visible;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typed[data-phase="idle"] {
+    animation: none;
+  }
+  .caret {
+    display: none;
+  }
+}
+
 .rule {
   width: 44px;
   height: 1px;
