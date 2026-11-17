@@ -45,7 +45,9 @@ from the repo root.
 
 - `app/page.tsx`: the page copy and sections
 - `app/globals.css`: the Marginalia "ink" styles (colors at the top)
-- `components/wordmark.tsx`: the WDYLT text wordmark; swap in the logo here
+- `components/wordmark.tsx` and `public/brand/`: the Signature logo. Replace an SVG in
+  `public/brand/` under the same file name to update it everywhere; the favicon
+  is set in `app/layout.tsx`
 - `components/waitlist-form.tsx` and `app/actions.ts`: the sign-up form and
   the server action that calls Convex
 - `../convex/waitlist.ts`: the mutation that validates and de-duplicates emails

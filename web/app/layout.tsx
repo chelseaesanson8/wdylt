@@ -36,6 +36,10 @@ export const metadata: Metadata = {
     description,
     type: "website",
   },
+  icons: {
+    icon: [{ url: "/brand/wdylt-2-signature-icon-dark.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/brand/wdylt-2-signature-icon-dark-1024.png" }],
+  },
   twitter: {
     card: "summary",
     title: "What did you learn today?",

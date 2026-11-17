@@ -107,22 +107,15 @@ ul {
 
 /* ---------- Wordmark (placeholder for the logo) ---------- */
 .wordmark {
-  font-family: var(--font-display), Didot, serif;
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  color: #f2ecde;
-  line-height: 1;
-  white-space: nowrap;
+  display: block;
+  width: auto;
+  max-width: 100%;
 }
 .wordmark--md {
-  font-size: 22px;
+  height: 40px;
 }
 .wordmark--lg {
-  font-size: 40px;
-}
-.wordmark__dot {
-  color: var(--amber);
-  letter-spacing: 0;
+  height: 72px;
 }
 
 /* ---------- Masthead ---------- */
