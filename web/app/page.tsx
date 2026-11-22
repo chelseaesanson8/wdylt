@@ -1,3 +1,5 @@
+import { StreakDemo } from "@/components/streak-demo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Wordmark } from "@/components/wordmark";
 import { TypedHero } from "@/components/typed-hero";
 import { WaitlistForm } from "@/components/waitlist-form";
@@ -20,25 +22,26 @@ const steps = [
   },
 ];
 
-// Sample entries from the design, to show the idea. Not real users.
+// Sample entries to show the idea, not real users. Three people "nearby"
+// one entry about patience: one from code, two from elsewhere.
 const sampleEntries = [
   {
     handle: "@jnwlr",
     no: "iv",
-    text: "Turned a recursive markdown parser into a loop with an explicit stack. Depth limits stopped being a mystery.",
-    note: "also thinking about unbounded depth",
+    text: "Wrote the failing test before touching the fix. Slower to start, but the bug stayed fixed.",
+    note: "also learning to slow down first",
   },
   {
-    handle: "@sofiabuilds",
+    handle: "@maren.runs",
     no: "iii",
-    text: "Tail-call optimisation is in the ES spec but only Safari shipped it. Ten years of assuming otherwise.",
-    note: "also learning about recursion",
+    text: "Kept my long run at an easy pace for once and finished the last mile faster than the first.",
+    note: "also finding speed in going slow",
   },
   {
-    handle: "@ravi.ln",
+    handle: "@ana.paints",
     no: "ii",
-    text: "Traced a production stack overflow to a cycle in a graph I assumed was a tree. The assumption was the bug.",
-    note: "also chasing a stack overflow",
+    text: "Finished a watercolour course. Waiting for each layer to dry is the whole technique.",
+    note: "also learning to wait",
   },
 ];
 
@@ -52,7 +55,10 @@ export default function Home() {
       <header className="masthead">
         <span className="mono dim">a daily practice</span>
         <Wordmark />
-        <span className="mono dim">no. 001</span>
+        <div className="masthead__end">
+          <span className="mono dim">no. 001</span>
+          <ThemeToggle />
+        </div>
       </header>
 
       <main>
@@ -84,6 +90,20 @@ export default function Home() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className="streak" aria-labelledby="streak-title">
+          <div className="streak__copy">
+            <p className="section-label mono">keep the thread</p>
+            <h2 id="streak-title" className="streak__title">
+              One page a day adds up.
+            </h2>
+            <p className="streak__body">
+              Every day you write, another page fills in. Your streak keeps count, a quiet reason to come back
+              tomorrow.
+            </p>
+          </div>
+          <StreakDemo />
         </section>
 
         <section className="kindred" aria-labelledby="kindred-title">
