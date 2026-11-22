@@ -10,10 +10,17 @@ import { useEffect, useState } from "react";
 const QUESTION = "What did you\nlearn today?";
 
 const SAMPLES = [
+  "Read Atomic Habits. Make the good habit obvious and the bad one a hassle.",
   "Postgres won't use your index if the query wraps the column in a function.",
-  "Recursion wasn't the problem, unbounded depth was. An explicit stack fixed it.",
+  "Finished a pottery class. Centering the clay is most of the work.",
+  "Ran my first 10K. Starting slower made the last mile my fastest.",
+  "Built a bookshelf. Measure twice, cut once is not just a saying.",
   "git bisect found the commit that broke the build in seven steps.",
+  "Finished a budgeting course. Saving first beats saving what's left.",
+  "Read about Roman aqueducts. A gentle slope carried water for miles.",
+  "Learned three chords on guitar. That's enough for hundreds of songs.",
   "One line of text-wrap: balance evens out a ragged headline.",
+  "Planted garlic. It needs a cold winter to split into cloves.",
   "Sourdough rises faster in an oven with only the light switched on.",
 ];
 
