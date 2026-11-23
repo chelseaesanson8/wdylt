@@ -37,8 +37,8 @@ export function WaitlistForm({ id }: { id?: string }) {
     <form id={id} action={formAction} className="waitlist">
       {!done && (
         <>
-          <label htmlFor={fieldId} className="waitlist__label">
-            your email
+          <label htmlFor={fieldId} className="waitlist__label label">
+            Your email
           </label>
           <div className="waitlist__row">
             <input
@@ -56,6 +56,7 @@ export function WaitlistForm({ id }: { id?: string }) {
               className="waitlist__input"
             />
             <button type="submit" className="waitlist__button" disabled={pending}>
+              <i aria-hidden="true" />
               {pending ? "Saving…" : "Save my place"}
             </button>
           </div>

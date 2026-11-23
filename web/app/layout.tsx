@@ -1,29 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
+import { Dela_Gothic_One, Zen_Kaku_Gothic_New } from "next/font/google";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
 
-// Headings: Newsreader, a text serif with optical sizes, so it stays elegant
-// large and clear small. Reading text: Inter, built for screens. The logo
-// is Newsreader italic too, outlined inside its SVG.
-const newsreader = Newsreader({
+// Vermilion Block type: Zen Kaku Gothic New for text and headings (heavy
+// weights for the big titles), Dela Gothic One for numbers. Latin only.
+const zenKaku = Zen_Kaku_Gothic_New({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz"],
-  variable: "--font-display",
+  weight: ["500", "700", "900"],
+  variable: "--font-sans",
   display: "swap",
 });
 
-const inter = Inter({
+const dela = Dela_Gothic_One({
   subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
+  weight: "400",
+  variable: "--font-num",
   display: "swap",
 });
 
@@ -41,7 +33,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      // Ink icon on dark systems, paper icon on light ones.
+      // Black icon on dark systems, paper icon on light ones.
       { url: "/favicon.svg", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
       { url: "/favicon-paper.svg", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
     ],
@@ -56,10 +48,11 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F5F2EA" },
-    { media: "(prefers-color-scheme: dark)", color: "#14151A" },
+    // The masthead is a black block in both editions.
+    { media: "(prefers-color-scheme: light)", color: "#1F1D1B" },
+    { media: "(prefers-color-scheme: dark)", color: "#2A2724" },
   ],
-  colorScheme: "dark light",
+  colorScheme: "light dark",
 };
 
 // Runs before the first paint: applies a light or dark choice the visitor
@@ -72,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // The theme script may set data-theme before React hydrates.
     <html
       lang="en"
-      className={`${newsreader.variable} ${inter.variable} ${plexMono.variable}`}
+      className={`${zenKaku.variable} ${dela.variable}`}
       suppressHydrationWarning
     >
       <head>

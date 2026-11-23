@@ -44,10 +44,16 @@ from the repo root.
 ## Where things are
 
 - `app/page.tsx`: the page copy and sections
-- `app/globals.css`: the Marginalia "ink" styles (colors at the top)
-- `components/wordmark.tsx` and `public/brand/`: the Signature logo. Replace an SVG in
-  `public/brand/` under the same file name to update it everywhere; the favicon
-  files (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`) sit in `public/`
+- `app/globals.css`: the Vermilion Block styles; Paper (light) colours at the
+  top, Ink (dark) colours right under them
+- `components/theme-toggle.tsx` and `lib/theme.ts`: the Paper/Ink toggle;
+  `app/layout.tsx` applies a stored choice before the page draws
+- `components/typed-hero.tsx`: the typed headline and sample learnings
+- `components/stack-demo.tsx`: the streak shown as a stack of books
+- `components/wordmark.tsx`: the Signature logo, inline so it takes the text
+  colour; the same outlines are in `public/brand/`, with the "w." seal stamps.
+  The favicon files (`favicon.ico`, `favicon.svg`, `favicon-paper.svg`,
+  `apple-touch-icon.png`) sit in `public/`
 - `components/waitlist-form.tsx` and `app/actions.ts`: the sign-up form and
   the server action that calls Convex
 - `../convex/waitlist.ts`: the mutation that validates and de-duplicates emails

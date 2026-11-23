@@ -1,22 +1,22 @@
-import { StreakDemo } from "@/components/streak-demo";
+import { StackDemo } from "@/components/stack-demo";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Wordmark } from "@/components/wordmark";
 import { TypedHero } from "@/components/typed-hero";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { Wordmark } from "@/components/wordmark";
 
 const steps = [
   {
-    no: "i",
+    no: "1",
     title: "Write one page",
-    body: "A few sentences on what you learned today. Once you set it down, it stays as written.",
+    body: "A few sentences on what you learned today. Once you stamp it, it stays as written.",
   },
   {
-    no: "ii",
+    no: "2",
     title: "We read between the lines",
     body: "Each day we look for entries that sit close to yours, whatever words they used.",
   },
   {
-    no: "iii",
+    no: "3",
     title: "Meet kindred learners",
     body: "See who was nearby today and what they found. Strangers, briefly on the same page.",
   },
@@ -27,23 +27,31 @@ const steps = [
 const sampleEntries = [
   {
     handle: "@jnwlr",
-    no: "iv",
+    no: "1",
     text: "Wrote the failing test before touching the fix. Slower to start, but the bug stayed fixed.",
     note: "also learning to slow down first",
   },
   {
     handle: "@maren.runs",
-    no: "iii",
+    no: "2",
     text: "Kept my long run at an easy pace for once and finished the last mile faster than the first.",
     note: "also finding speed in going slow",
   },
   {
     handle: "@ana.paints",
-    no: "ii",
+    no: "3",
     text: "Finished a watercolour course. Waiting for each layer to dry is the whole technique.",
     note: "also learning to wait",
   },
 ];
+
+// The "w." seal stamps; decorative, so they carry no alt text.
+function Seal({ variant }: { variant: "square-cream" | "circle" }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- small static PNG
+    <img className="seal" src={`/brand/seal-${variant}.png`} alt="" width={468} height={468} />
+  );
+}
 
 export default function Home() {
   return (
@@ -53,98 +61,132 @@ export default function Home() {
       </a>
 
       <header className="masthead">
-        <span className="mono dim">a daily practice</span>
-        <Wordmark />
-        <div className="masthead__end">
-          <span className="mono dim">no. 001</span>
-          <ThemeToggle />
+        <div className="wrap">
+          <Wordmark />
+          <div className="masthead__end">
+            <span className="label">One page a day</span>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
       <main>
         <section className="hero" aria-labelledby="hero-title">
-          <div className="lamp" aria-hidden="true" />
-          <p className="mono muted">One page a day</p>
-          <TypedHero id="hero-title" />
-          <p className="hero__lede">
-            Write it down before you forget why it mattered. Each day we&rsquo;ll show you the people who
-            were learning something close to it.
-          </p>
-          <div className="hero__form">
+          <div className="wrap">
+            <span className="hero__bar" aria-hidden="true" />
+            <div className="hero__inner">
+              <p className="hero__eyebrow label">A daily learning journal</p>
+              <TypedHero id="hero-title" />
+              <p className="hero__lede">
+                Write it down before you forget why it mattered. Stamp the page, and each day we&rsquo;ll show
+                you the people who were learning something close to it.
+              </p>
+            </div>
+          </div>
+          <Seal variant="square-cream" />
+        </section>
+        <div className="vbar" aria-hidden="true" />
+
+        <section className="join" aria-label="Join the waitlist">
+          <div className="wrap">
             <WaitlistForm id="join" />
           </div>
         </section>
 
-        <section className="steps" aria-labelledby="steps-title">
-          <h2 id="steps-title" className="section-label mono">
-            how it works
-          </h2>
-          <ol className="steps__list">
-            {steps.map((step) => (
-              <li key={step.no} className="step">
-                <span className="mono dim step__no" aria-hidden="true">
-                  {step.no}
-                </span>
-                <h3 className="step__title">{step.title}</h3>
-                <p className="step__body">{step.body}</p>
-              </li>
-            ))}
-          </ol>
+        <section className="sec steps" aria-labelledby="steps-title">
+          <div className="wrap">
+            <div className="sec__head">
+              <p className="sec__label label">How it works</p>
+              <h2 id="steps-title" className="sec__title">
+                Write. Stamp. Meet.
+              </h2>
+            </div>
+            <ol className="steps__list">
+              {steps.map((step) => (
+                <li key={step.no} className="step">
+                  <span className="step__no" aria-hidden="true">
+                    {step.no}
+                  </span>
+                  <div>
+                    <h3 className="step__title">{step.title}</h3>
+                    <p className="step__body">{step.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
 
-        <section className="streak" aria-labelledby="streak-title">
-          <div className="streak__copy">
-            <p className="section-label mono">keep the thread</p>
-            <h2 id="streak-title" className="streak__title">
-              One page a day adds up.
-            </h2>
-            <p className="streak__body">
-              Every day you write, another page fills in. Your streak keeps count, a quiet reason to come back
-              tomorrow.
-            </p>
+        <section className="sec streak" aria-labelledby="streak-title">
+          <div className="wrap">
+            <div className="sec__head">
+              <p className="sec__label label">Keep the thread</p>
+              <h2 id="streak-title" className="sec__title">
+                One page a day adds up.
+              </h2>
+              <p className="sec__body">
+                Every page you stamp adds a book to your stack. Keep going and it grows. Miss a day and a new
+                stack starts.
+              </p>
+            </div>
+            <StackDemo />
           </div>
-          <StreakDemo />
         </section>
 
         <section className="kindred" aria-labelledby="kindred-title">
-          <p className="mono muted center">page 214 filed</p>
-          <h2 id="kindred-title" className="kindred__title">
-            Three people were nearby today
-          </h2>
-          <ul className="kindred__list" aria-label="Sample entries">
-            {sampleEntries.map((entry) => (
-              <li key={entry.handle} className="entry">
-                <div className="entry__meta mono">
-                  <span className="muted">{entry.handle}</span>
-                  <span className="dim" aria-hidden="true">
-                    {entry.no}
-                  </span>
-                </div>
-                <p className="entry__text">{entry.text}</p>
-                <p className="entry__note">{entry.note}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="mono dim center small">sample entries</p>
+          <div className="wrap">
+            <p className="sec__label label">Page 214 stamped</p>
+            <h2 id="kindred-title" className="kindred__title">
+              Three people were nearby today
+            </h2>
+            <ul className="kindred__list" aria-label="Sample entries">
+              {sampleEntries.map((entry) => (
+                <li key={entry.handle} className="ticket">
+                  <div className="ticket__head">
+                    <span>{entry.handle}</span>
+                    <span className="ticket__no" aria-hidden="true">
+                      {entry.no}
+                    </span>
+                  </div>
+                  <p className="ticket__text">{entry.text}</p>
+                  <p className="ticket__note">
+                    <i aria-hidden="true" />
+                    {entry.note}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <p className="kindred__foot label">Sample entries</p>
+          </div>
         </section>
 
         <section className="closing" aria-labelledby="closing-title">
-          <h2 id="closing-title" className="closing__title">
-            Start the habit with us.
-          </h2>
-          <p className="closing__body">
-            Coming to iPhone first. Join the waitlist and we&rsquo;ll send one email when the first
-            pages open.
-          </p>
-          <a className="text-link mono" href="#join">
-            save your place
-          </a>
+          <div className="wrap">
+            <h2 id="closing-title" className="closing__title">
+              Start the habit with us.
+            </h2>
+            <p className="closing__body">
+              Coming to iPhone first. Join the waitlist and we&rsquo;ll send one email when the first pages open.
+            </p>
+            <a className="text-link" href="#join">
+              <i aria-hidden="true" />
+              Save your place
+            </a>
+          </div>
+          <Seal variant="circle" />
+          <div className="stairs" aria-hidden="true">
+            <span style={{ width: 120 }} />
+            <span style={{ width: 88 }} />
+            <span style={{ width: 56 }} />
+          </div>
         </section>
       </main>
 
       <footer className="colophon">
-        <Wordmark />
-        <span className="mono dim">&copy; {new Date().getFullYear()} What Did You Learn Today</span>
+        <div className="wrap">
+          <Wordmark size="sm" />
+          <span className="label">&copy; 2026 WDYLT</span>
+        </div>
       </footer>
     </>
   );

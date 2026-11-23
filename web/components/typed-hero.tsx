@@ -10,17 +10,16 @@ import { useEffect, useState } from "react";
 const QUESTION = "What did you\nlearn today?";
 
 const SAMPLES = [
+  "Planted garlic. It needs a cold winter to split into cloves.",
   "Read Atomic Habits. Make the good habit obvious and the bad one a hassle.",
-  "Postgres won't use your index if the query wraps the column in a function.",
   "Finished a pottery class. Centering the clay is most of the work.",
   "Ran my first 10K. Starting slower made the last mile my fastest.",
   "Built a bookshelf. Measure twice, cut once is not just a saying.",
-  "git bisect found the commit that broke the build in seven steps.",
+  "Postgres won't use your index if the query wraps the column in a function.",
   "Finished a budgeting course. Saving first beats saving what's left.",
   "Read about Roman aqueducts. A gentle slope carried water for miles.",
   "Learned three chords on guitar. That's enough for hundreds of songs.",
-  "One line of text-wrap: balance evens out a ragged headline.",
-  "Planted garlic. It needs a cold winter to split into cloves.",
+  "git bisect found the commit that broke the build in seven steps.",
   "Sourdough rises faster in an oven with only the light switched on.",
 ];
 
@@ -97,13 +96,16 @@ export function TypedHero({ id }: { id: string }) {
           <span className="typed__ghost">{QUESTION.slice(typed)}</span>
         </span>
       </h1>
-      <p className="til" aria-hidden="true">
-        <span className="til__label mono">today i learned</span>
-        <span className="til__text">
-          {sample}
-          {phase === "loop" && <Caret />}
-        </span>
-      </p>
+      {/* The sample entry sits on manuscript squares. */}
+      <div className="til" aria-hidden="true">
+        <span className="til__label label">Today I learned</span>
+        <div className="til__paper">
+          <span className="til__text">
+            {sample}
+            {phase === "loop" && <Caret />}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }
