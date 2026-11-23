@@ -25,6 +25,15 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## The look: Vermilion Block
+
+Cream paper, black blocks, a vermilion bar, squared paper and the "w." seal. Paper (light) and Ink (dark) follow the phone's setting.
+
+- **Change a colour, font or text size:** `src/theme/tokens.js`. Everything else reads from there, including NativeWind classes like `bg-paper`, `text-ink`, `font-gothic-bold` and `text-title`.
+- **Pieces to build screens with:** `src/components/vermilion` (`Text`, `Button`, `RedBarHeader`, `Seal`, `Wordmark`, `SquaredPaper`, `Streak`/`BookStack`, `StampCard`, `Perforation`).
+- **See them all:** run the app and tap **See the theme**, or open the `/preview` screen.
+- **Fonts:** Zen Kaku Gothic New and Dela Gothic One (Latin only), in `assets/fonts`, under the SIL Open Font License.
+
 ## Get a fresh project
 
 When you're ready, run:
