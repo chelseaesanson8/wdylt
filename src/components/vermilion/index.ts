@@ -5,7 +5,7 @@
  *
  * Open the "/preview" screen in the app to see every one of them.
  */
-export { BookStack, MISSED_DAY_STYLE, stamped, Streak, type Day, type MissedDayStyle } from "./BookStack";
+export { BookStack, stamped, Streak, type Day } from "./BookStack";
 export { Button } from "./Button";
 export { Perforation } from "./Perforation";
 export { RedBarHeader } from "./RedBarHeader";

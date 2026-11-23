@@ -27,8 +27,8 @@ import { palettes, type as typeScale, useTheme, type ColorName, type ThemeMode, 
 // November 2026, stamped every day up to today (the 23rd) except the 9th.
 const NOVEMBER_STAMPED = Array.from({ length: 22 }, (_, i) => i + 1).filter((d) => d !== 9);
 
-// A streak with two missed days in it, to show how a missed day looks.
-const DAYS_WITH_GAPS: Day[] = [...stamped(9), "missed", ...stamped(14), "missed", ...stamped(6)];
+// Two weeks with two missed days, like the ghost book mockup (misses on Fri 14 and Wed 19).
+const TWO_WEEKS: Day[] = [...stamped(4), "missed", ...stamped(4), "missed", ...stamped(4)];
 
 export default function Preview() {
   const { colors, mode, setMode } = useTheme();
@@ -114,15 +114,11 @@ export default function Preview() {
           <Streak days={stamped(47)} todayNote="sourdough" milestones />
         </Section>
 
-        <Section title="Missed days (not decided yet)">
+        <Section title="Missed days: the ghost book">
           <Text variant="small" tone="muted">
-            Placeholder: a blank, dashed book where the missed day was.
+            A missed day leaves a blank book, and the stack keeps growing.
           </Text>
-          <Streak days={DAYS_WITH_GAPS} todayNote="sourdough" />
-          <Text variant="small" tone="muted">
-            The mockup&apos;s idea: a missed day starts a new stack.
-          </Text>
-          <Streak days={DAYS_WITH_GAPS} todayNote="sourdough" missedDay="new-stack" />
+          <Streak days={TWO_WEEKS} todayNote="sourdough" bookHeight={[20, 26]} />
         </Section>
 
         <Section title="Stamp card: the month">

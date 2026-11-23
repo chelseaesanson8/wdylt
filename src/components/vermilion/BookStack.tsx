@@ -2,35 +2,27 @@
  * The streak, shown as books lying flat in a stack: one book per stamped page.
  * Today's book is on top, in vermilion.
  *
- *   <Streak days={days} todayNote="sourdough" />   the whole streak, missed days and all
- *   <BookStack days={stamped(47)} milestones />   one pile, no shelf
+ * A missed day is a "ghost book": an empty, dashed outline in the pile where
+ * that day's book would be. The stack keeps growing, so its height always
+ * matches the number of days.
+ *
+ *   <Streak days={days} todayNote="sourdough" />   the stack on its shelf
+ *   <BookStack days={stamped(47)} milestones />   just the stack, no shelf
  *
  * `days` is a list, oldest first, of "stamped" or "missed". `stamped(47)` is
  * a shortcut for 47 stamped days in a row.
- *
- * HOW A MISSED DAY LOOKS IS NOT DECIDED YET. It's one setting:
- * MISSED_DAY_STYLE below (or the `missedDay` prop on <Streak>).
- *   - "blank-page": a placeholder. An empty, dashed outline book sits in the
- *     pile where the missed day was. The pile keeps going.
- *   - "new-stack": the mockup's idea. A missed day ends the pile and a new
- *     one starts beside it on the shelf.
- * To add another look (ghost book, ribbon, leaning stack...), add its name to
- * MissedDayStyle and draw it in <MissedBook> below. Nothing else changes.
  *
  * Book sizes and colours come from `seed`, so the same streak always looks
  * the same.
  */
 import { View } from "react-native";
+import Svg, { Rect } from "react-native-svg";
 
 import { fonts, useTheme, type Palette } from "@/theme";
 import { between, seededRandom } from "./random";
 import { Text } from "./Text";
 
 export type Day = "stamped" | "missed";
-export type MissedDayStyle = "blank-page" | "new-stack";
-
-/** The app-wide default for how a missed day looks. Placeholder until it's picked. */
-export const MISSED_DAY_STYLE: MissedDayStyle = "blank-page";
 
 /** Shortcut: `n` stamped days in a row. */
 export function stamped(n: number): Day[] {
@@ -92,22 +84,22 @@ function layoutBooks(
   return { books, height, width: wMax + wobble * 2 };
 }
 
-/** One missed day, drawn in the pile. This is the bit to change once the look is picked. */
-function MissedBook({ book, colors }: { book: Book; colors: Palette }) {
-  // "blank-page" placeholder: an empty book, just a dashed outline.
+/** A missed day: the ghost book. Same size as a real book, dashed outline, no fill. */
+function GhostBook({ book, colors }: { book: Book; colors: Palette }) {
+  const stroke = 1.4;
   return (
-    <View
-      style={{
-        position: "absolute",
-        left: book.x,
-        top: book.y,
-        width: book.w,
-        height: book.h,
-        borderWidth: 1,
-        borderStyle: "dashed",
-        borderColor: colors.muted,
-      }}
-    />
+    <Svg width={book.w} height={book.h} style={{ position: "absolute", left: book.x, top: book.y }}>
+      <Rect
+        x={stroke / 2}
+        y={stroke / 2}
+        width={book.w - stroke}
+        height={book.h - stroke}
+        fill="none"
+        stroke={colors.muted}
+        strokeWidth={stroke}
+        strokeDasharray="5 3"
+      />
+    </Svg>
   );
 }
 
@@ -127,7 +119,7 @@ type BookStackProps = {
   milestones?: boolean;
 };
 
-/** One pile of books. Missed days inside it are drawn by <MissedBook>. */
+/** The pile of books. Missed days are ghost books. */
 export function BookStack({
   days,
   seed = 21,
@@ -147,7 +139,7 @@ export function BookStack({
     <View style={{ width: width + (annotate ? ANNOTATION : 0), height }}>
       {books.map((b, i) =>
         b.day === "missed" ? (
-          <MissedBook key={i} book={b} colors={colors} />
+          <GhostBook key={i} book={b} colors={colors} />
         ) : (
           <View
             key={i}
@@ -198,61 +190,41 @@ export function BookStack({
             </View>
           ) : null,
         )}
+
+      {annotate &&
+        books.map((b, i) =>
+          b.day === "missed" ? (
+            <View key={`g${i}`} style={{ position: "absolute", left: b.x + b.w + 8, top: b.y + b.h / 2 - 10, flexDirection: "row", alignItems: "center" }}>
+              <View style={{ width: Math.max(8, width - b.x - b.w), height: 1, backgroundColor: colors.rule, marginRight: 8 }} />
+              <Text variant="small" tone="muted">
+                blank page
+              </Text>
+            </View>
+          ) : null,
+        )}
     </View>
   );
 }
 
-/** Splits days into runs of stamped days, dropping the missed days between them. */
-function splitAtMissedDays(days: Day[]): Day[][] {
-  const runs: Day[][] = [[]];
-  for (const d of days) {
-    if (d === "missed") {
-      if (runs[runs.length - 1].length) runs.push([]);
-    } else runs[runs.length - 1].push(d);
-  }
-  return runs.filter((r) => r.length);
-}
-
-/**
- * The whole streak on a shelf. Missed days are shown however `missedDay` says
- * (default: MISSED_DAY_STYLE at the top of this file).
- */
+/** The streak on its shelf. */
 export function Streak({
   days,
   todayNote,
   milestones,
-  missedDay = MISSED_DAY_STYLE,
+  bookHeight,
   seed = 7,
 }: {
   days: Day[];
   todayNote?: string;
   milestones?: boolean;
-  missedDay?: MissedDayStyle;
+  /** Thinnest and thickest book. Thicker books suit a short streak. */
+  bookHeight?: [number, number];
   seed?: number;
 }) {
   const { colors } = useTheme();
-  const piles = missedDay === "new-stack" ? splitAtMissedDays(days) : [days];
-  // With several piles, older ones are narrower so the current one stands out.
-  const many = piles.length > 1;
-
   return (
     <View>
-      <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 14 }}>
-        {piles.map((pile, i) => {
-          const isCurrent = i === piles.length - 1;
-          return (
-            <BookStack
-              key={i}
-              days={pile}
-              seed={seed + i * 13}
-              bookWidth={!many ? [150, 190] : isCurrent ? [96, 120] : [56, 72]}
-              current={isCurrent}
-              todayNote={isCurrent ? todayNote : undefined}
-              milestones={isCurrent && milestones}
-            />
-          );
-        })}
-      </View>
+      <BookStack days={days} seed={seed} bookHeight={bookHeight} todayNote={todayNote} milestones={milestones} />
       {/* The shelf itself. */}
       <View style={{ height: 5, backgroundColor: colors.ink, marginTop: 2 }} />
     </View>
