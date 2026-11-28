@@ -45,7 +45,13 @@ from the repo root.
 
 - `app/page.tsx`: the page copy and sections
 - `app/globals.css`: the Vermilion Block styles; Paper (light) colours at the
-  top, Ink (dark) colours right under them
+  top, Ink (dark) colours right under them, then the type scale, spacing
+  scale and the no-bounce spring curve (`--spring`) every animation uses.
+  Motion, type and fallbacks follow the Apple design guide: press feedback
+  on pointer-down, only transform and opacity animate, and there are
+  reduced-motion, reduced-transparency and high-contrast versions
+- `components/masthead-edge.tsx`: shows the header's soft bottom edge once
+  the page scrolls under it
 - `components/theme-toggle.tsx` and `lib/theme.ts`: the Paper/Ink toggle;
   `app/layout.tsx` applies a stored choice before the page draws
 - `components/typed-hero.tsx`: the typed headline and sample learnings

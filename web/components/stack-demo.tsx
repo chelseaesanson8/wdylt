@@ -4,12 +4,19 @@ import { useEffect, useRef, useState } from "react";
 
 // A sample streak drawn as a stack of books: one per page written, today's
 // on top in red, and an empty one waiting for tomorrow. When it scrolls into
-// view the books drop in from the bottom and the count climbs to its total.
+// view the books drop in from the bottom on a no-bounce spring and the count
+// climbs to its total on the same kind of spring.
 // With reduced motion, or without JavaScript, it shows the finished stack.
 
 const TOTAL = 47;
-const STEP_MS = 40; // delay between books
-const COUNT_MS = TOTAL * STEP_MS + 360;
+// Response (seconds) of the critically damped spring the count follows, so it
+// settles as the last books land. The CSS uses the same curve for the books.
+const COUNT_RESPONSE = 1.4;
+
+function spring(t: number, response: number) {
+  const w = (2 * Math.PI) / response;
+  return 1 - (1 + w * t) * Math.exp(-w * t);
+}
 
 type Kind = "a" | "b" | "c";
 type Book = {
@@ -76,9 +83,9 @@ export function StackDemo() {
         setState("play");
         const start = performance.now();
         const tick = (now: number) => {
-          const t = Math.min(1, (now - start) / COUNT_MS);
-          setCount(Math.round(TOTAL * t));
-          if (t < 1) frame = requestAnimationFrame(tick);
+          const value = Math.min(TOTAL, Math.round(TOTAL * spring((now - start) / 1000, COUNT_RESPONSE)));
+          setCount(value);
+          if (value < TOTAL) frame = requestAnimationFrame(tick);
         };
         frame = requestAnimationFrame(tick);
       },

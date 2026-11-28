@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useId, useRef } from "react";
+import { useActionState, useEffect, useId, useRef, useState } from "react";
 import { joinWaitlistAction, type JoinState } from "@/app/actions";
 
 const initialState: JoinState = { status: "idle" };
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const messages: Record<JoinState["status"], string> = {
   idle: "",
@@ -26,8 +27,13 @@ export function WaitlistForm({ id }: { id?: string }) {
     if (source && sourceRef.current) sourceRef.current.value = source.slice(0, 64);
   }, []);
 
+  // Once a rejected email has been fixed, clear the error as they type,
+  // rather than waiting for the next submit.
+  const [fixed, setFixed] = useState(false);
+  useEffect(() => setFixed(false), [state]);
+
   const done = state.status === "joined" || state.status === "already_joined";
-  const isError = state.status === "invalid" || state.status === "error";
+  const isError = (state.status === "invalid" || state.status === "error") && !fixed;
 
   const statusText = done || isError
     ? messages[state.status]
@@ -54,8 +60,11 @@ export function WaitlistForm({ id }: { id?: string }) {
               aria-invalid={isError || undefined}
               aria-describedby={statusId}
               className="waitlist__input"
+              onChange={(e) => {
+                if (state.status === "invalid" && EMAIL_PATTERN.test(e.target.value.trim())) setFixed(true);
+              }}
             />
-            <button type="submit" className="waitlist__button" disabled={pending}>
+            <button type="submit" className="waitlist__button pressable" disabled={pending}>
               <i aria-hidden="true" />
               {pending ? "Saving…" : "Save my place"}
             </button>

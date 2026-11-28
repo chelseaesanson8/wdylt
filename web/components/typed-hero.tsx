@@ -55,7 +55,7 @@ export function TypedHero({ id }: { id: string }) {
         setTyped(i);
         await wait(/[\s?]/.test(QUESTION[i - 1]) ? 140 : 75);
       }
-      await wait(1200);
+      await wait(1000);
       if (cancelled) return;
       setPhase("loop");
       await wait(500);

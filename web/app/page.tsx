@@ -1,3 +1,4 @@
+import { MastheadEdge } from "@/components/masthead-edge";
 import { StackDemo } from "@/components/stack-demo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { TypedHero } from "@/components/typed-hero";
@@ -61,6 +62,7 @@ export default function Home() {
       </a>
 
       <header className="masthead">
+        <MastheadEdge />
         <div className="wrap">
           <Wordmark />
           <div className="masthead__end">
@@ -125,8 +127,8 @@ export default function Home() {
                 One page a day adds up.
               </h2>
               <p className="sec__body">
-                Every page you stamp adds a book to your stack. Keep going and it grows. Miss a day and a new
-                stack starts.
+                Every page you stamp adds a book to your stack. Keep going and it grows. Miss a day and it stays a
+                blank book.
               </p>
             </div>
             <StackDemo />
@@ -135,10 +137,12 @@ export default function Home() {
 
         <section className="kindred" aria-labelledby="kindred-title">
           <div className="wrap">
-            <p className="sec__label label">Page 214 stamped</p>
-            <h2 id="kindred-title" className="kindred__title">
-              Three people were nearby today
-            </h2>
+            <div className="sec__head">
+              <p className="sec__label label">Page 214 stamped</p>
+              <h2 id="kindred-title" className="sec__title">
+                Three people were nearby today
+              </h2>
+            </div>
             <ul className="kindred__list" aria-label="Sample entries">
               {sampleEntries.map((entry) => (
                 <li key={entry.handle} className="ticket">
@@ -168,16 +172,16 @@ export default function Home() {
             <p className="closing__body">
               Coming to iPhone first. Join the waitlist and we&rsquo;ll send one email when the first pages open.
             </p>
-            <a className="text-link" href="#join">
+            <a className="text-link pressable" href="#join">
               <i aria-hidden="true" />
               Save your place
             </a>
           </div>
           <Seal variant="circle" />
           <div className="stairs" aria-hidden="true">
-            <span style={{ width: 120 }} />
-            <span style={{ width: 88 }} />
-            <span style={{ width: 56 }} />
+            <span style={{ width: "7.5rem" }} />
+            <span style={{ width: "5.5rem" }} />
+            <span style={{ width: "3.5rem" }} />
           </div>
         </section>
       </main>
