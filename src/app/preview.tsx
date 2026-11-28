@@ -3,16 +3,22 @@
  * them on a real phone in Expo Go. Use the Paper / Ink buttons at the top
  * to flip between light and dark without changing your phone's setting.
  *
+ * Try "Stamp the day" near the top: today's book drops onto the pile, the
+ * seal presses onto today's square and your phone gives one tap. "Undo"
+ * takes it back the same way. Turn on Reduce Motion or Increase Contrast in
+ * the phone's Accessibility settings to see the gentler versions.
+ *
  * This screen is just for us while building. It can go before launch.
  */
 import { Link } from "expo-router";
-import type { ReactNode } from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { useState, type ReactNode } from "react";
+import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
   Button,
   Perforation,
+  Press,
   RedBarHeader,
   Seal,
   SquaredPaper,
@@ -22,7 +28,8 @@ import {
   Text,
   type Day,
 } from "@/components/vermilion";
-import { palettes, type as typeScale, useTheme, type ColorName, type ThemeMode, type TypeVariant } from "@/theme";
+import { palettes, space, type as typeScale, useTheme, type ColorName, type ThemeMode, type TypeVariant } from "@/theme";
+import { haptics } from "@/theme/haptics";
 
 // November 2026, stamped every day up to today (the 23rd) except the 9th.
 const NOVEMBER_STAMPED = Array.from({ length: 22 }, (_, i) => i + 1).filter((d) => d !== 9);
@@ -30,17 +37,54 @@ const NOVEMBER_STAMPED = Array.from({ length: 22 }, (_, i) => i + 1).filter((d) 
 // Two weeks with two missed days, like the ghost book mockup (misses on Fri 14 and Wed 19).
 const TWO_WEEKS: Day[] = [...stamped(4), "missed", ...stamped(4), "missed", ...stamped(4)];
 
+// The same two weeks up to yesterday, for the "Stamp the day" demo. Today is the 14th day.
+const UP_TO_YESTERDAY = TWO_WEEKS.slice(0, -1);
+
 export default function Preview() {
-  const { colors, mode, setMode } = useTheme();
+  const { colors, mode, setMode, a11y } = useTheme();
   const insets = useSafeAreaInsets();
+  const [stampedToday, setStampedToday] = useState(false);
+
+  const demoDays: Day[] = stampedToday ? [...UP_TO_YESTERDAY, "stamped"] : UP_TO_YESTERDAY;
+  const toggleToday = () => {
+    const next = !stampedToday;
+    setStampedToday(next);
+    // The tap lands on the same frame the book starts to drop. Undo is silent.
+    if (!next) return;
+    if ((demoDays.length + 1) % 10 === 0) haptics.milestone();
+    else haptics.stamp();
+  };
 
   return (
     <ScrollView className="flex-1 bg-paper" contentContainerStyle={{ paddingBottom: insets.bottom + 48 }}>
       <RedBarHeader count="47" title="books high" note="one per page" sideLabel="In a row" seal />
 
-      <View className="gap-10 px-6 pt-8">
+      <View className="gap-s5 px-s3 pt-s4">
+        <Section title="Try it: stamp the day">
+          <Text variant="small" tone="muted">
+            Press the button. Today&apos;s book drops onto the pile, the seal presses onto today&apos;s square, and your phone taps once.
+            Undo lifts both back off.
+          </Text>
+          <Streak days={demoDays} current={stampedToday} todayNote="sourdough" bookHeight={[20, 26]} holds={TWO_WEEKS.length} />
+          <StampCard year={2026} month={11} stamped={stampedToday ? [...NOVEMBER_STAMPED, 23] : NOVEMBER_STAMPED} today={23} />
+          <Button
+            label={stampedToday ? "Undo today's stamp" : "Stamp the day"}
+            variant={stampedToday ? "outline" : "red"}
+            onPress={toggleToday}
+          />
+        </Section>
+
+        <Section title="Your phone's settings">
+          <Text variant="small" tone="muted">
+            The theme follows these from Settings, Accessibility.
+          </Text>
+          <Setting label="Reduce Motion" on={a11y.reduceMotion} note="things fade instead of moving" />
+          <Setting label="Increase Contrast" on={a11y.increaseContrast} note="greys and hairlines turn full ink" />
+          <Setting label="Reduce Transparency" on={a11y.reduceTransparency} note="nothing is see-through yet" />
+        </Section>
+
         <Section title="Paper or ink">
-          <View className="flex-row gap-2">
+          <View className="flex-row gap-s1">
             {(["system", "paper", "ink"] as ThemeMode[]).map((m) => (
               <ModeChip key={m} label={m === "system" ? "Follow phone" : m} active={mode === m} onPress={() => setMode(m)} />
             ))}
@@ -49,7 +93,7 @@ export default function Preview() {
 
         <Section title="Type">
           {(Object.keys(typeScale) as TypeVariant[]).map((v) => (
-            <View key={v} className="gap-1">
+            <View key={v} className="gap-hair">
               <Text variant="label" tone="muted">
                 {v}
               </Text>
@@ -61,9 +105,9 @@ export default function Preview() {
         </Section>
 
         <Section title="Colours">
-          <View className="flex-row flex-wrap gap-3">
+          <View className="flex-row flex-wrap gap-s2">
             {(Object.keys(palettes.paper) as ColorName[]).map((name) => (
-              <View key={name} className="w-[30%] gap-1">
+              <View key={name} className="w-[29%] gap-hair">
                 <View className="h-12 border border-rule" style={{ backgroundColor: colors[name] }} />
                 <Text variant="small" numberOfLines={1}>
                   {name}
@@ -74,11 +118,11 @@ export default function Preview() {
         </Section>
 
         <Section title="Seal">
-          <View className="flex-row items-center gap-5">
+          <View className="flex-row items-center gap-s3">
             <Seal size={72} seed={4} />
             <Seal size={72} seed={11} shape="circle" />
             <Seal size={44} seed={21} rotate={0} wear={0.1} />
-            <View className="bg-block p-3">
+            <View className="bg-block p-s2">
               <Seal size={64} seed={3} color={colors.onBlock} />
             </View>
           </View>
@@ -145,8 +189,8 @@ export default function Preview() {
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <View className="gap-3">
-      <View className="flex-row items-center gap-3">
+    <View className="gap-s2">
+      <View className="flex-row items-center gap-s2">
         <View className="h-3 w-3 bg-verm" />
         <Text variant="heading">{title}</Text>
       </View>
@@ -156,17 +200,40 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 function ModeChip({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) {
+  const { colors } = useTheme();
   return (
-    <Pressable
+    <Press
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={{ selected: active }}
-      className={active ? "border-2 border-ink px-3 py-2" : "border border-rule px-3 py-2"}
+      style={{
+        minHeight: 44,
+        justifyContent: "center",
+        paddingHorizontal: space.s2,
+        borderWidth: active ? 2 : 1,
+        borderColor: active ? colors.ink : colors.rule,
+      }}
     >
       <Text variant="label" tone={active ? "ink" : "muted"}>
         {label}
       </Text>
-    </Pressable>
+    </Press>
+  );
+}
+
+function Setting({ label, on, note }: { label: string; on: boolean; note: string }) {
+  return (
+    <View className="flex-row items-baseline justify-between gap-s2">
+      <View className="shrink">
+        <Text>{label}</Text>
+        <Text variant="small" tone="muted">
+          {note}
+        </Text>
+      </View>
+      <Text variant="label" tone={on ? "vermText" : "muted"}>
+        {on ? "On" : "Off"}
+      </Text>
+    </View>
   );
 }
 

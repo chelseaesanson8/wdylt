@@ -68,19 +68,62 @@ const fonts = {
 
 /**
  * The type scale. Sizes are in points, the same units as the mockups
- * (which were drawn on a 390-wide iPhone screen).
+ * (which were drawn on a 390-wide iPhone screen). It matches the landing
+ * page (version 2), following the Apple design guide:
+ *   - Tracking (letter spacing) changes with size: big text is pulled
+ *     tighter, small capitals are opened up a little, body text stays at 0.
+ *     Values are in points, worked out from the landing page's em values.
+ *   - Leading (line height) falls as size grows: tight on headlines,
+ *     roomy on body text.
+ *   - `maxScale` caps how far the phone's text-size setting can grow that
+ *     step, so a huge "47" can't break the screen. Body text has no cap.
  * `upper: true` means the text is shown in capitals.
  */
 const type = {
-  count: { font: "number", size: 104, lineHeight: 116 }, // "47" in the header
-  number: { font: "number", size: 32, lineHeight: 40 }, // "PAGE 47", "23 OCT"
-  display: { font: "gothicBlack", size: 34, lineHeight: 42 }, // "Welcome back."
-  title: { font: "gothicBlack", size: 28, lineHeight: 36 }, // "What did you learn today?"
-  heading: { font: "gothicBlack", size: 20, lineHeight: 28 }, // "books high"
-  body: { font: "gothic", size: 16, lineHeight: 24 }, // entries, paragraphs
-  small: { font: "gothic", size: 13, lineHeight: 20 }, // hints, captions
-  label: { font: "gothicBold", size: 11, lineHeight: 16, tracking: 1.8, upper: true }, // "YESTERDAY · 22 NOV"
-  button: { font: "gothicBold", size: 14, lineHeight: 20, tracking: 2.2, upper: true }, // "STAMP THE DAY"
+  count: { font: "number", size: 104, lineHeight: 108, tracking: -2, maxScale: 1.3 }, // "47" in the header (-0.02em)
+  number: { font: "number", size: 32, lineHeight: 36, tracking: -0.6, maxScale: 1.5 }, // "PAGE 47", "23 OCT" (-0.02em)
+  display: { font: "gothicBlack", size: 34, lineHeight: 38, tracking: -1, maxScale: 1.6 }, // "Welcome back." (-0.03em)
+  title: { font: "gothicBlack", size: 28, lineHeight: 32, tracking: -0.6, maxScale: 1.8 }, // "What did you learn today?" (-0.02em)
+  heading: { font: "gothicBlack", size: 20, lineHeight: 26, tracking: -0.2 }, // "books high" (-0.01em)
+  body: { font: "gothic", size: 16, lineHeight: 26 }, // entries, paragraphs (1.6)
+  small: { font: "gothic", size: 13, lineHeight: 19, tracking: 0.1 }, // hints, captions (1.45)
+  label: { font: "gothicBold", size: 11, lineHeight: 15, tracking: 1.3, upper: true }, // "YESTERDAY · 22 NOV" (0.12em)
+  button: { font: "gothicBold", size: 14, lineHeight: 18, tracking: 1.7, upper: true }, // "STAMP THE DAY" (0.12em)
 };
 
-module.exports = { palettes, fonts, type };
+/**
+ * One spacing scale, the same 8-point steps as the landing page.
+ * Use these for padding, margins and gaps, so nothing on screen is a random
+ * number. In classes they're `s1` to `s7` (like `gap-s2` or `px-s3`), plus
+ * `hair` for the 4-point nudge between a label and its line.
+ */
+const space = {
+  hair: 4,
+  s1: 8,
+  s2: 16,
+  s3: 24,
+  s4: 32,
+  s5: 48,
+  s6: 64,
+  s7: 96,
+};
+
+/**
+ * Motion, in Apple's two numbers:
+ *   damping: 1 = settles with no bounce, under 1 = overshoots a little.
+ *   response: roughly how many seconds it takes to get there. Not a fixed
+ *   duration, because a spring can be grabbed and sent somewhere else halfway.
+ * Use `settle` for almost everything. `flick` is only for something the
+ * person threw, like a card swiped away, because only then does a bounce feel
+ * earned. `press` is how fast a button sinks when touched.
+ * src/theme/motion.ts turns these into Reanimated springs.
+ */
+const motion = {
+  settle: { damping: 1, response: 0.4 },
+  flick: { damping: 0.8, response: 0.4 },
+  press: { scale: 0.97, ms: 100 },
+  /** With Reduce Motion on, things fade instead of moving, over this many ms. */
+  fadeMs: 200,
+};
+
+module.exports = { palettes, fonts, type, space, motion };

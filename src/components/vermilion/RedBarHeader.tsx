@@ -17,7 +17,7 @@ import type { ReactNode } from "react";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useTheme } from "@/theme";
+import { space, useTheme } from "@/theme";
 import { Seal } from "./Seal";
 import { Text } from "./Text";
 import { Wordmark } from "./Wordmark";
@@ -42,7 +42,7 @@ type Props = {
 };
 
 const BAR = 18; // width of the red side bar
-const GUTTER = 24; // left/right page margin, same as the mockups
+const GUTTER = space.s3; // left/right page margin, same as the mockups
 
 export function RedBarHeader({ logo = true, eyebrow, count, title, subtitle, note, sideLabel, seal, children }: Props) {
   const { colors } = useTheme();
@@ -53,17 +53,17 @@ export function RedBarHeader({ logo = true, eyebrow, count, title, subtitle, not
       <View
         style={{
           backgroundColor: colors.block,
-          paddingTop: insets.top + 12,
-          paddingBottom: 22,
+          paddingTop: insets.top + space.s2,
+          paddingBottom: space.s3,
           paddingLeft: GUTTER,
           // Leave room on the right for the red bar (and the seal, if shown).
-          paddingRight: GUTTER + BAR + 16 + (seal ? 96 : 0),
+          paddingRight: GUTTER + BAR + space.s2 + (seal ? space.s7 : 0),
         }}
       >
         {logo && <Wordmark height={24} color={colors.onBlock} />}
 
         {eyebrow && (
-          <Text variant="label" tone="onBlockSoft" style={{ marginTop: logo ? 28 : 8 }}>
+          <Text variant="label" tone="onBlockSoft" style={{ marginTop: logo ? space.s4 : space.s1 }}>
             {eyebrow}
           </Text>
         )}
@@ -75,7 +75,7 @@ export function RedBarHeader({ logo = true, eyebrow, count, title, subtitle, not
         )}
 
         {(title || note) && (
-          <View style={{ flexDirection: "row", alignItems: "baseline", justifyContent: "space-between", gap: 12 }}>
+          <View style={{ flexDirection: "row", alignItems: "baseline", justifyContent: "space-between", gap: space.s2 }}>
             {title ? (
               <Text variant={count ? "heading" : "title"} tone="onBlock" style={{ flexShrink: 1 }}>
                 {title}
@@ -92,7 +92,7 @@ export function RedBarHeader({ logo = true, eyebrow, count, title, subtitle, not
         )}
 
         {subtitle && (
-          <Text variant="small" tone="onBlockSoft" style={{ marginTop: 4 }}>
+          <Text variant="small" tone="onBlockSoft" style={{ marginTop: space.hair }}>
             {subtitle}
           </Text>
         )}
@@ -102,7 +102,7 @@ export function RedBarHeader({ logo = true, eyebrow, count, title, subtitle, not
         {seal && (
           // The seal, off-white, pressed into the black block beside the number.
           <View
-            style={{ position: "absolute", top: insets.top + 48, right: GUTTER + BAR + 14 }}
+            style={{ position: "absolute", top: insets.top + space.s5, right: GUTTER + BAR + space.s2 }}
             pointerEvents="none"
           >
             <Seal size={88} seed={3} rotate={-8} color={colors.onBlock} />

@@ -29,10 +29,21 @@ You can start developing by editing the files inside the **app** directory. This
 
 Cream paper, black blocks, a vermilion bar, squared paper and the "w." seal. Paper (light) and Ink (dark) follow the phone's setting.
 
-- **Change a colour, font or text size:** `src/theme/tokens.js`. Everything else reads from there, including NativeWind classes like `bg-paper`, `text-ink`, `font-gothic-bold` and `text-title`.
-- **Pieces to build screens with:** `src/components/vermilion` (`Text`, `Button`, `RedBarHeader`, `Seal`, `Wordmark`, `SquaredPaper`, `Streak`/`BookStack`, `StampCard`, `Perforation`).
+- **Change a colour, font, text size, spacing step or spring:** `src/theme/tokens.js`. Everything else reads from there, including NativeWind classes like `bg-paper`, `text-ink`, `font-gothic-bold`, `text-title` and `gap-s2`.
+- **Pieces to build screens with:** `src/components/vermilion` (`Text`, `Button`, `Press`, `RedBarHeader`, `Seal`, `Wordmark`, `SquaredPaper`, `Streak`/`BookStack`, `StampCard`, `Perforation`).
 - **See them all:** run the app and tap **See the theme**, or open the `/preview` screen.
 - **Fonts:** Zen Kaku Gothic New and Dela Gothic One (Latin only), in `assets/fonts`, under the SIL Open Font License.
+
+### How it should feel
+
+The app follows the same Apple design guide as the landing page (version 2), so the two match:
+
+- **Touch:** anything tappable is a `Press` (or a `Button`, which is built on it). It sinks to 97% the instant a finger lands and springs back on release.
+- **Motion:** springs that settle without bouncing (`spring("settle")` in `src/theme/motion.ts`). Things leave the way they came, like today's book dropping onto the streak and lifting back off on undo. Bounce (`spring("flick")`) is only for something the person threw.
+- **Haptics:** only two, from `src/theme/haptics.ts`: `haptics.stamp()` when a day is stamped and `haptics.milestone()` every 10th book. Nothing else buzzes.
+- **Type:** letter spacing changes with size (tight headlines, slightly open small capitals, body at 0) and line height falls as size grows. Text grows with the phone's text-size setting; the biggest steps are capped so they can't break a screen.
+- **Spacing:** one scale, `hair` (4) then `s1` to `s7` (8, 16, 24, 32, 48, 64, 96), the same steps as the landing page.
+- **Accessibility:** `useTheme().a11y` reads Reduce Motion (movement becomes a fade), Increase Contrast (greys and hairlines go full ink) and Reduce Transparency (for anything see-through we add later).
 
 ## Get a fresh project
 

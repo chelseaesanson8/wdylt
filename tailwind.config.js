@@ -5,9 +5,10 @@
  * hex codes. <ThemeProvider> fills those variables in with the Paper or Ink
  * palette, so `bg-paper` or `text-ink` switch by themselves in dark mode.
  *
- * The actual values live in src/theme/tokens.js.
+ * The actual values live in src/theme/tokens.js, including the spacing
+ * scale (s1 to s7), so classes like `gap-s2` match the landing page's steps.
  */
-const { palettes, fonts, type } = require("./src/theme/tokens");
+const { palettes, fonts, type, space } = require("./src/theme/tokens");
 
 // "paperDeep" -> "paper-deep", so classes read like `bg-paper-deep`.
 const kebab = (s) => s.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
@@ -35,12 +36,18 @@ for (const [key, t] of Object.entries(type)) {
   ];
 }
 
+// The spacing scale: `gap-s2`, `px-s3`, `mt-hair` and so on.
+const spacing = {};
+for (const [key, value] of Object.entries(space)) {
+  spacing[key] = `${value}px`;
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: { colors, fontFamily, fontSize },
+    extend: { colors, fontFamily, fontSize, spacing },
   },
   plugins: [],
 };

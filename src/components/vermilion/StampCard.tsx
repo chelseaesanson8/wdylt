@@ -7,11 +7,17 @@
  *
  * `month` is 1 to 12 (November is 11), not JavaScript's 0 to 11.
  * The card measures its width and sizes the squares to fit.
+ *
+ * When today gets stamped, its seal presses onto the square (a touch big and
+ * tilted, then flat) and lifts off the same way if it's undone. Seals already
+ * there when the screen opens don't animate.
  */
 import { useState } from "react";
 import { View } from "react-native";
+import Animated, { LayoutAnimationConfig } from "react-native-reanimated";
 
-import { useTheme } from "@/theme";
+import { space, useTheme } from "@/theme";
+import { stampIn, stampOut } from "@/theme/motion";
 import { Seal } from "./Seal";
 import { Text } from "./Text";
 
@@ -25,12 +31,12 @@ type Props = {
   today?: number;
 };
 
-const COLUMN_GAP = 7;
-const ROW_GAP = 6;
+const COLUMN_GAP = space.s1;
+const ROW_GAP = space.s1;
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
 
 export function StampCard({ year, month, stamped, today }: Props) {
-  const { colors } = useTheme();
+  const { colors, a11y } = useTheme();
   const [width, setWidth] = useState(0);
 
   const cell = Math.floor((width - COLUMN_GAP * 6) / 7);
@@ -45,65 +51,76 @@ export function StampCard({ year, month, stamped, today }: Props) {
   const weeks = Array.from({ length: slots.length / 7 }, (_, w) => slots.slice(w * 7, w * 7 + 7));
 
   return (
-    <View onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
-      {cell > 0 && (
-        <>
-          <View style={{ flexDirection: "row", gap: COLUMN_GAP, marginBottom: 6 }}>
-            {WEEKDAYS.map((d, i) => (
-              <Text key={i} variant="label" tone="muted" style={{ width: cell, textAlign: "center", fontSize: 10 }}>
-                {d}
-              </Text>
-            ))}
-          </View>
+    <LayoutAnimationConfig skipEntering>
+      <View onLayout={(e) => setWidth(e.nativeEvent.layout.width)}>
+        {cell > 0 && (
+          <>
+            <View style={{ flexDirection: "row", gap: COLUMN_GAP, marginBottom: space.s1 }}>
+              {WEEKDAYS.map((d, i) => (
+                <Text key={i} variant="label" tone="muted" style={{ width: cell, textAlign: "center", fontSize: 10 }}>
+                  {d}
+                </Text>
+              ))}
+            </View>
 
-          <View style={{ gap: ROW_GAP }}>
-            {weeks.map((week, w) => (
-              <View key={w} style={{ flexDirection: "row", gap: COLUMN_GAP }}>
-                {week.map((day, i) => {
-                  if (day === null) return <View key={i} style={{ width: cell, height: cell }} />;
-                  const isStamped = stampedSet.has(day);
-                  const isToday = day === today;
-                  return (
-                    <View
-                      key={i}
-                      style={{
-                        width: cell,
-                        height: cell,
-                        borderWidth: isToday ? 2 : 1,
-                        borderColor: isToday ? colors.ink : isStamped ? colors.rule : colors.rule + "99",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Text variant="label" tone="muted" style={{ position: "absolute", top: 2, left: 4, fontSize: 9, lineHeight: 12, letterSpacing: 0 }}>
-                        {day}
-                      </Text>
-                      {isStamped ? (
-                        <View style={{ marginTop: 4, marginLeft: 3 }}>
-                          <Seal size={cell * 0.8} shape="circle" seed={day * 3 + 1} />
-                        </View>
-                      ) : isToday ? (
-                        // Where today's stamp will go.
-                        <View
-                          style={{
-                            width: cell * 0.56,
-                            height: cell * 0.56,
-                            marginTop: 4,
-                            borderRadius: cell,
-                            borderWidth: 1.4,
-                            borderStyle: "dashed",
-                            borderColor: colors.verm,
-                          }}
-                        />
-                      ) : null}
-                    </View>
-                  );
-                })}
-              </View>
-            ))}
-          </View>
-        </>
-      )}
-    </View>
+            <View style={{ gap: ROW_GAP }}>
+              {weeks.map((week, w) => (
+                <View key={w} style={{ flexDirection: "row", gap: COLUMN_GAP }}>
+                  {week.map((day, i) => {
+                    if (day === null) return <View key={i} style={{ width: cell, height: cell }} />;
+                    const isStamped = stampedSet.has(day);
+                    const isToday = day === today;
+                    return (
+                      <View
+                        key={i}
+                        style={{
+                          width: cell,
+                          height: cell,
+                          borderWidth: isToday ? 2 : 1,
+                          borderColor: isToday ? colors.ink : isStamped ? colors.rule : colors.rule + "99",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text
+                          variant="label"
+                          tone="muted"
+                          style={{ position: "absolute", top: 2, left: 4, fontSize: 9, lineHeight: 12, letterSpacing: 0 }}
+                        >
+                          {day}
+                        </Text>
+                        {isStamped ? (
+                          <Animated.View
+                            key="seal"
+                            entering={stampIn(a11y.reduceMotion)}
+                            exiting={stampOut(a11y.reduceMotion)}
+                            style={{ marginTop: 4, marginLeft: 3 }}
+                          >
+                            <Seal size={cell * 0.8} shape="circle" seed={day * 3 + 1} />
+                          </Animated.View>
+                        ) : isToday ? (
+                          // Where today's stamp will go.
+                          <View
+                            style={{
+                              width: cell * 0.56,
+                              height: cell * 0.56,
+                              marginTop: 4,
+                              borderRadius: cell,
+                              borderWidth: 1.4,
+                              borderStyle: "dashed",
+                              borderColor: colors.verm,
+                            }}
+                          />
+                        ) : null}
+                      </View>
+                    );
+                  })}
+                </View>
+              ))}
+            </View>
+          </>
+        )}
+      </View>
+    </LayoutAnimationConfig>
   );
 }

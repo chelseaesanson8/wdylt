@@ -8,6 +8,7 @@
 export { BookStack, stamped, Streak, type Day } from "./BookStack";
 export { Button } from "./Button";
 export { Perforation } from "./Perforation";
+export { Press } from "./Press";
 export { RedBarHeader } from "./RedBarHeader";
 export { Seal } from "./Seal";
 export { SquaredPaper } from "./SquaredPaper";

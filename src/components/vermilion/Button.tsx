@@ -4,10 +4,13 @@
  *   <Button label="Open today's page" onPress={...} />            black block, red mark
  *   <Button label="Add a note" variant="outline" onPress={...} />  outlined
  *   <Button label="Stamp the day" variant="red" onPress={...} />   vermilion
+ *
+ * It sinks the moment it's touched and springs back on release (see Press).
  */
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
-import { useTheme } from "@/theme";
+import { space, useTheme } from "@/theme";
+import { Press } from "./Press";
 import { Text } from "./Text";
 
 type Props = {
@@ -26,27 +29,28 @@ export function Button({ label, onPress, variant = "solid", mark, disabled }: Pr
   const textTone = variant === "outline" ? "ink" : "onBlock";
 
   return (
-    <Pressable
+    <Press
       onPress={onPress}
       disabled={disabled}
       accessibilityRole="button"
-      style={({ pressed }) => ({
-        minHeight: 54,
-        paddingHorizontal: 20,
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: !!disabled }}
+      style={{
+        minHeight: 56,
+        paddingHorizontal: space.s3,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        gap: 12,
+        gap: space.s2,
         backgroundColor: background,
-        borderWidth: variant === "outline" ? 1.4 : 0,
+        borderWidth: variant === "outline" ? 1.5 : 0,
         borderColor: colors.ink,
-        opacity: disabled ? 0.4 : pressed ? 0.8 : 1,
-      })}
+      }}
     >
-      {showMark && <View style={{ width: 10, height: 10, backgroundColor: colors.verm }} />}
+      {showMark && <View style={{ width: 10, height: 10, backgroundColor: variant === "red" ? colors.block : colors.verm }} />}
       <Text variant="button" tone={textTone}>
         {label}
       </Text>
-    </Pressable>
+    </Press>
   );
 }
